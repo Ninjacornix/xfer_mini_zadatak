@@ -1,8 +1,11 @@
 {
   "name": "xfer_zadatak",
   "version": "0.1.0",
+  "homepage": "https://ninjacornix.github.io/xfer_mini_zadatak/",
   "private": true,
   "scripts": {
+    "predeploy": "next build && next export",
+    "deploy": "gh-pages -d out",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -24,6 +27,7 @@
     "autoprefixer": "latest",
     "eslint": "latest",
     "eslint-config-next": "latest",
+    "gh-pages": "^6.0.0",
     "postcss": "latest",
     "tailwindcss": "latest",
     "typescript": "latest"

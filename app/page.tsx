@@ -1,12 +1,15 @@
 "use client";
 import React, {useEffect, useState} from "react";
-import Maps from "./maps";
 import Scoreboard from "./scoreboard";
 import NewGame from "./newgame";
+import 'leaflet/dist/leaflet.css';
+import dynamic from "next/dynamic"
+
+const Maps = dynamic(() => import("./maps"), {ssr: false})
 
 export default function Home() {
 
-  const [users, setUsers] = useState([])
+  const [users, setUsers] = useState<any>([])
   const [user, setUser] = useState("")
   const [score, setScore] = useState(0)
   const [remove, setRemove] = useState(false)
@@ -31,7 +34,7 @@ export default function Home() {
 
     //sort users by score
     let temp = users
-    temp.sort((a, b) => {
+    temp.sort((a: any, b: any) => {
       return a.score - b.score
     })
 
