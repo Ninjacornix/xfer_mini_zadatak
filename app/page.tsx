@@ -87,7 +87,7 @@ export default function Home() {
           zIndex: "1",
         }}
       >
-        <Maps score={{gameFinished, remove, user}} />
+        <Maps score={{gameFinished, remove, user, score}} />
       </div>
       <div
         style={{

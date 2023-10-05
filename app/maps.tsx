@@ -9,37 +9,39 @@ const myIcon = L.icon({
     iconSize: [38, 38],
 });
 
+
+
 const locations: [number, number][] = [
-  [45.80850072738114,15.995897327348327],
-  [45.8127078082012,15.965822569960194],
-  [45.7957979116309,15.994046466360633],
-  [45.83237666115715,15.976691289777696],
-  [45.79241624579775,15.967861347682009],
-  [45.790769337332456,15.962603669275117],
-  [45.81308553008886,15.985218298487208],
-  [45.79529545617052,15.966862987204482],
-  [45.79208453798948,15.962314998140384],
-  [45.79301777983297,15.96999731858222],
-  [45.81346763078366,15.964666740763082],
-  [45.802724329106006,16.003157316624034],
-  [45.79477036242666,15.964455359288154],
-  [45.795073239739295,15.994602926999647],
-  [45.79990519258438,16.005837855444053],
-  [45.81152737281019,15.997271997794591],
-  [45.81013895081581,16.01665331155555],
-  [45.7906664749969,15.962517897448157],
-  [45.8031305900108,15.96356649572598],
-  [45.79605451972534,15.96458844280814],
-  [45.81469737831795,15.965038984815903],
-  [45.79535766682832,15.967443600671858],
-  [45.813597181124806,15.964735335581835],
-  [45.796905204948686,15.966347649076924],
-  [45.81274526135703,15.992717206633596],
-  [45.809514113031256,15.96220512011199],
-  [45.811162252465344,15.998046648877349],
-  [45.81330322791377,15.997261164280657],
-  [45.78081263901853,15.964095642314463],
-  [45.80786913033796,16.00886497431401]
+  [45.80558722631532,15.982263269620503],
+[45.80288301947747,15.963337909878629],
+[45.80837334869255,15.980495327006762],
+[45.80850072738114,15.995897327348327],
+[45.81195492948553,15.973242598480482],
+[45.8057143263365,15.977592140846657],
+[45.80594132625922,15.986604498488177],
+[45.83237666115715,15.976691289777696],
+[45.79610951577996,15.975742318012871],
+[45.79548945991166,15.9703800977984],
+[45.79241624579775,15.967861347682009],
+[45.81211290914488,15.96958332477637],
+[45.81162173438676,15.980496712637809],
+[45.81346763078366,15.964666740763082],
+[45.802724329106006,16.003157316624034],
+[45.795073239739295,15.994602926999647],
+[45.79990519258438,16.005837855444053],
+[45.81013895081581,16.01665331155555],
+[45.806549668816736,15.96734899780046],
+[45.79725974121769,15.98327812700002],
+[45.80082872326693,15.972206727349096],
+[45.8083857438019,15.974887229508193],
+[45.796905204948686,15.966347649076924],
+[45.798759579112165,15.988631511629247],
+[45.80956913438709,15.986231721951883],
+[45.81201944150146,15.977190199960305],
+[45.809514113031256,15.96220512011199],
+[45.811162252465344,15.998046648877349],
+[45.78081263901853,15.964095642314463],
+[45.80786913033796,16.00886497431401]
 ]
 
 const position: [number, number] = [45.800399, 15.977568];
@@ -99,11 +101,17 @@ export default function Maps({score}: {score: any}) {
     if(gameEnd) return
     if(disabled) return
     let latlng = [position[1], position[0]];
-    if(coordinates != undefined && coordinates.length > 1 && coordinates.length == 29 && JSON.stringify(coordinates[0]) == JSON.stringify(latlng)) {
+
+    if(coordinates != undefined && coordinates.length > 1 && coordinates.length == 30 && JSON.stringify(coordinates[0]) == JSON.stringify(latlng)) {
       setCoordinates([...coordinates, latlng]);
       setGameEnd(true);
-      console.log("gameEnd");
+      alert("Game end");
     } else if(coordinates.length > 0) {
+      for(let i = 0; i < coordinates.length; i++) {
+        if(JSON.stringify(coordinates[i]) == JSON.stringify(latlng)) {
+          return
+        }
+      }
       setCoordinates([...coordinates, latlng]);
     } else {
       setCoordinates([latlng]);
@@ -133,15 +141,38 @@ export default function Maps({score}: {score: any}) {
     }
   } , [score.user]);
 
+  useEffect(() => {
+    if(score.score == 0){
+      const dat = document.getElementsByClassName('leaflet-marker-pane')[0].childNodes;
+      for(let i = 0; i < dat.length; i++) {
+        dat[i].style.cursor = "pointer";
+        document.getElementsByClassName('leaflet-marker-icon')[i].src = "https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-512.png";
+      }
+    }
+  }
+  , [score.score]);
+
   return (
-    <MapContainer center={position} zoomControl={false} doubleClickZoom={false} zoom={14} scrollWheelZoom={true} style={{height: "100%", width: "100%"}}>
+    <MapContainer center={position} zoomControl={false} doubleClickZoom={false} zoom={13} scrollWheelZoom={true} style={{height: "100%", width: "100%"}}>
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?markers"
       />
 
-      {locations.map((l) => (
-      <Marker position={l} icon={myIcon} key={l[0]} eventHandlers={{
+      {locations.map((l, index) => (
+      <Marker position={l}
+        icon={myIcon}
+        key={l[0]} eventHandlers={{
         click: () => {
+
+          if(disabled) return
+          if(gameEnd) return
+
+          if(document.getElementsByClassName('leaflet-marker-pane')[0].childNodes[index] != undefined){
+            document.getElementsByClassName('leaflet-marker-pane')[0].childNodes[index].style.cursor = "default";
+            console.log(document.getElementsByClassName('leaflet-marker-pane')[0].childNodes[index]);
+            document.getElementsByClassName('leaflet-marker-icon')[index].src = "https://cdn3.iconfinder.com/data/icons/flat-pro-basic-set-1-1/32/location-gray-512.png";
+          }
+
           handleClick(l);
         }
       }} />
