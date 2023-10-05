@@ -143,10 +143,10 @@ export default function Maps({score}: {score: any}) {
 
   useEffect(() => {
     if(score.score == 0){
-      const dat = document.getElementsByClassName('leaflet-marker-pane')[0].childNodes;
+      const dat = Array.from(document.getElementsByClassName('leaflet-marker-pane')[0].childNodes);
       for(let i = 0; i < dat.length; i++) {
-        dat[i].style.cursor = "pointer";
-        document.getElementsByClassName('leaflet-marker-icon')[i].src = "https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-512.png";
+        (dat[i] as HTMLElement).style.cursor = "pointer";
+        (document.getElementsByClassName('leaflet-marker-icon')[i] as HTMLImageElement).src = "https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-512.png";
       }
     }
   }
@@ -168,9 +168,9 @@ export default function Maps({score}: {score: any}) {
           if(gameEnd) return
 
           if(document.getElementsByClassName('leaflet-marker-pane')[0].childNodes[index] != undefined){
-            document.getElementsByClassName('leaflet-marker-pane')[0].childNodes[index].style.cursor = "default";
+            (document.getElementsByClassName('leaflet-marker-pane')[0].childNodes[index] as HTMLElement).style.cursor = "default";
             console.log(document.getElementsByClassName('leaflet-marker-pane')[0].childNodes[index]);
-            document.getElementsByClassName('leaflet-marker-icon')[index].src = "https://cdn3.iconfinder.com/data/icons/flat-pro-basic-set-1-1/32/location-gray-512.png";
+            (document.getElementsByClassName('leaflet-marker-icon')[index] as HTMLImageElement).src = "https://cdn3.iconfinder.com/data/icons/flat-pro-basic-set-1-1/32/location-gray-512.png";
           }
 
           handleClick(l);

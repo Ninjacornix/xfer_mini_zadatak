@@ -32,7 +32,6 @@ export default function Home() {
       }
     }
 
-    //sort users by score
     let temp = users
     temp.sort((a: any, b: any) => {
       return a.score - b.score
