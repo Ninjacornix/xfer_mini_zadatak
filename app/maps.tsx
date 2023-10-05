@@ -53,7 +53,7 @@ export default function Maps({score}: {score: any}) {
 
   const fetchTwoCoordinates = async () => {
 
-    const str = "https://router.project-osrm.org/route/v1/driving/"
+    const str = "http://34.154.16.199/route/v1/driving/"
     const end = "?overview=full&geometries=geojson"
     let stringdata;
 
