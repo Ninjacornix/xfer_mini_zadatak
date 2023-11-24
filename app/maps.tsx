@@ -55,7 +55,7 @@ export default function Maps({score}: {score: any}) {
 
   const fetchTwoCoordinates = async () => {
 
-    const str = "http://routing.openstreetmap.de/routed-car/route/v1/driving/";
+    const str = "https://routing.openstreetmap.de/routed-car/route/v1/driving/";
     const end = "?overview=full&geometries=geojson"
     let stringdata;
 
